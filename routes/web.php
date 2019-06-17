@@ -4,18 +4,24 @@ $router->post('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->post(
-    'auth/login', 
-    [
-       'uses' => 'Auth\AuthController@userAuthenticate'
-    ]
-);
+$router->group(['prefix' => 'api'],
+    function () use ($router) {
+        $router->group(['middleware' => 'jwt.auth'],
+            function () use ($router) {
+                $router->get('users', ['uses' => 'UserController@showAllUsers']);
+            }
+        );
 
-$router->group(['prefix' => 'api','middleware' => 'jwt.auth'], 
-    function() use ($router) {
-    	$router->get('users',  ['uses' => 'UserController@showAllUsers']);
+        $router->post(
+            'auth/login',
+            [
+                'uses' => 'Auth\AuthController@userAuthenticate'
+            ]
+        );
     }
 );
+
+
 
 // $router->group(['prefix' => 'api'], function () use ($router) {
 //   $router->get('users',  ['uses' => 'UserController@showAllUsers']);

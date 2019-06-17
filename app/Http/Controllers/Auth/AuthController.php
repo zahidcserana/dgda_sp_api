@@ -46,7 +46,11 @@ class AuthController extends Controller
             return response()->json([
                 'status'  => 200,
                 'message' => 'Login Successful',
-                'data'    => ['token' => $this->jwt($user) ] // return token
+                'data'    => [
+                    'token' => $this->jwt($user),
+                    'email' => $user->user_email,
+                    'user_type' => $user->user_type,
+                ]
             ], 200);
         }
         return response()->json([
