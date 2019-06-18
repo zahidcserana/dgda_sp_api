@@ -37,7 +37,7 @@ class AuthController extends Controller
             
             return response()->json([
                 'error' => 'User does not exist.'
-            ], 400);
+            ], 401);
         }
       
         // Verify the password and generate the token
@@ -54,7 +54,8 @@ class AuthController extends Controller
             ], 200);
         }
         return response()->json([
+            'status' => 403,
             'error' => 'Login details provided does not exit.'
-        ], 400);
+        ], 403);
     } 
 }
