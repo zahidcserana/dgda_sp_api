@@ -19,6 +19,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'user_email'    => $faker->unique()->email,
         'password' => Hash::make('12345'),
         'pharmacy_shop_row_id' => 1,
-        'userid' => 1000001
+        'userid' => 1000001,
+        'user_type' => 'PHARMACYSUPERADMIN',
     ];
 });
