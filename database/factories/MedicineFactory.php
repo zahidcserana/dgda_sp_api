@@ -13,14 +13,8 @@ use Illuminate\Support\Facades\Hash;
 */
 
 
-$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Medicine::class, function (Faker\Generator $faker) {
     return [
-        'user_name'     => $faker->name,
-        'user_email'    => $faker->unique()->email,
-        'password' => Hash::make('12345'),
-        'pharmacy_shop_row_id' => 1,
-        'userid' => 1000001,
-        'user_type' => 'PHARMACYSUPERADMIN',
+        'medicine_brand_name'     => $faker->name
     ];
 });
-

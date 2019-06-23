@@ -9,6 +9,7 @@ $router->group(['prefix' => 'api'],
         $router->group(['middleware' => 'jwt.auth'],
             function () use ($router) {
                 $router->get('users', ['uses' => 'UserController@showAllUsers']);
+                $router->get('medicines', ['uses' => 'MedicineController@search']);
             }
         );
 
@@ -21,6 +22,8 @@ $router->group(['prefix' => 'api'],
     }
 );
 
+   $router->get('medicine-scripe',  ['uses' => 'TestController@medicineScript']);
+   $router->get('medicine-type',  ['uses' => 'TestController@medicineTypeScript']);
 
 
 // $router->group(['prefix' => 'api'], function () use ($router) {
