@@ -12,7 +12,11 @@ class MedicineController extends Controller
     public function search(Request $request)
     {
         $str = $request->input('search');
-        $medicines = Medicine::where('medicine_brand_name', 'like', '%' . $str . '%')->get();
-        return response()->json($medicines);
+        $medicines = Medicine::where('brand_name', 'like', '%' . $str . '%')->get();
+        $data = array();
+        foreach ($medicines as $medicine) {
+            $data[] = $medicine->brand_name;
+        }
+        return response()->json($data);
     }
 }
