@@ -15,9 +15,7 @@ class Cart extends Model
             }
             return false;
         } else {
-            $cartInput = array(
-
-            );
+            $cartInput = array();
             $data['cart_id'] = $this::insertGetId($cartInput);
         }
 
@@ -25,8 +23,16 @@ class Cart extends Model
 
         $addItem = $cartItem->addItem($data);
         if ($addItem) {
-            return true;
+            $cartDetails = $this->getCartDetails($data['cart_id']);
+            return ['success' => true, 'data' => $cartDetails];
         }
-        return false;
+        return ['success' => false];
+    }
+
+    public function getCartDetails($cartId)
+    {
+        $cart = $this::where('id', $cartId)->first();
+
+        return $cart;
     }
 }

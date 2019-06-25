@@ -25,7 +25,7 @@ class CartsController extends Controller
         $cartModel = new Cart();
         $cart = $cartModel->AddToCart($data);
 
-
+        return response()->json($cart);
 
     }
 
