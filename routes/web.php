@@ -1,6 +1,6 @@
 <?php
 
-$router->post('/', function () use ($router) {
+$router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
@@ -10,6 +10,10 @@ $router->group(['prefix' => 'api'],
             function () use ($router) {
                 $router->get('users', ['uses' => 'UserController@showAllUsers']);
                 $router->get('medicines/search', ['uses' => 'MedicineController@search']);
+                $router->get('companies', ['uses' => 'CompanyController@index']);
+
+                /** Carts */
+                $router->post('carts/add-to-cart', ['uses' => 'CartsController@addToCart']);
             }
         );
 

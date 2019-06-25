@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medicine;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class MedicineController extends Controller
 {
@@ -13,13 +11,16 @@ class MedicineController extends Controller
     {
         $str = $request->input('search');
         $medicines = Medicine::where('brand_name', 'like', '%' . $str . '%')
+            ->orWhere('id', $str)
             ->inRandomOrder()
             ->limit(10)
             ->get();
         $data = array();
         foreach ($medicines as $medicine) {
-            $data[] = $medicine->brand_name.' ('.$medicine->medicine_id.') ';
+            $data[] = $medicine->brand_name;
         }
         return response()->json($data);
     }
+
+
 }
