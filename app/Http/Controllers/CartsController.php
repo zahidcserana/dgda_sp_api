@@ -31,14 +31,14 @@ class CartsController extends Controller
 
     private function _getMedicineId($medicineName)
     {
-        $medicineData = Medicine::where('brand_name', 'like', '%' . $medicineName . '%')->first();
+        $medicineData = Medicine::where('brand_name', 'like', $medicineName)->first();
 
         return !empty($medicineData) ? $medicineData->id : '';
     }
 
     private function _getCompanyId($companyName)
     {
-        $companyData = MedicineCompany::where('company_name', 'like', '%' . $companyName . '%')->first();
+        $companyData = MedicineCompany::where('company_name', 'like', $companyName)->first();
 
         return !empty($companyData) ? $companyData->id : '';
     }
