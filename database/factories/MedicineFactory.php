@@ -15,6 +15,6 @@ use Illuminate\Support\Facades\Hash;
 
 $factory->define(App\Models\Medicine::class, function (Faker\Generator $faker) {
     return [
-        'medicine_brand_name'     => $faker->name
+        'brand_name'     => $faker->name
     ];
 });
