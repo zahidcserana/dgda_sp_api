@@ -19,8 +19,8 @@ class CartItem extends Model
           'company_id' => $companyData->id,
           'quantity' => $data['quantity'],
           'cart_id' => $data['cart_id'],
-          'unit_price' => 110,
-          'sub_total' => 125,
+          'unit_price' => $medicineData->price_per_pcs,
+          'sub_total' => $medicineData->price_per_pcs,
         );
 
         $cartItem = CartItem::insertGetId($item);
@@ -28,5 +28,10 @@ class CartItem extends Model
             return true;
         }
         return false;
+    }
+
+    public function medicine()
+    {
+        return $this->belongsTo('App\Models\Medicine');
     }
 }

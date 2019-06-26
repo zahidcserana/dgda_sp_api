@@ -9,11 +9,22 @@ $router->group(['prefix' => 'api'],
         $router->group(['middleware' => 'jwt.auth'],
             function () use ($router) {
                 $router->get('users', ['uses' => 'UserController@showAllUsers']);
+
+                /** Medicine */
                 $router->get('medicines/search', ['uses' => 'MedicineController@search']);
+                $router->post('medicines/company', ['uses' => 'MedicineController@searchByCompany']);
                 $router->get('companies', ['uses' => 'CompanyController@index']);
 
                 /** Carts */
-                $router->post('carts/add-to-cart', ['uses' => 'CartsController@addToCart']);
+                $router->post('carts/add-to-cart', ['uses' => 'CartController@addToCart']);
+                $router->get('carts/{token}', ['uses' => 'CartController@view']);
+
+                /** Order */
+                $router->post('orders', ['uses' => 'OrderController@create']);
+                $router->get('orders', ['uses' => 'OrderController@index']);
+                $router->get('orders/{token}', ['uses' => 'OrderController@view']);
+
+
             }
         );
 

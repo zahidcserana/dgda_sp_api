@@ -22,5 +22,31 @@ class MedicineController extends Controller
         return response()->json($data);
     }
 
+    public function searchByCompany(Request $request)
+    {
+        $companyId = $request->input('company');
+        $medicines = Medicine::where('company_id', $companyId)
+            ->limit(100)
+            ->get();
+        $data = array();
+        foreach ($medicines as $medicine) {
+            $aData = array();
+            $aData['id'] = $medicine->id;
+            $aData['brand_name'] = $medicine->brand_name;
+            $aData['generic_name'] = $medicine->generic_name;
+            $aData['strength'] = $medicine->strength;
+            $aData['dar_no'] = $medicine->dar_no;
+            $aData['price_per_pcs'] = $medicine->price_per_pcs;
+            $aData['price_per_box'] = $medicine->price_per_box;
+            $aData['price_per_strip'] = $medicine->price_per_strip;
+            $aData['pcs_per_box'] = $medicine->pcs_per_box;
+            $aData['pcs_per_strip'] = $medicine->pcs_per_strip;
 
+            $aData['medicine_type'] = $medicine->medicineType->name;
+
+            $data[] = $aData;
+        }
+
+        return response()->json($data);
+    }
 }

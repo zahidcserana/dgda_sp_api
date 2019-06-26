@@ -9,7 +9,7 @@ use App\Models\MedicineCompany;
 use Illuminate\Http\Request;
 use Validator;
 
-class CartsController extends Controller
+class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
@@ -25,5 +25,13 @@ class CartsController extends Controller
 
         return response()->json($cart);
 
+    }
+
+    public function view($cartToken)
+    {
+
+        $cart = Cart::where('token', $cartToken)->first();
+        $cartModel = new Cart();
+        return response()->json($cartModel->getCartDetails($cart->id));
     }
 }
