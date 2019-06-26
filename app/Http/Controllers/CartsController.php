@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Medicine;
 use App\Models\MedicineCompany;
 use Illuminate\Http\Request;
+use Validator;
 
 class CartsController extends Controller
 {
@@ -14,32 +15,15 @@ class CartsController extends Controller
     {
         $data = $request->all();
 
-//        $this->validate($request, [
-//            'medicine' => 'required',
-//            'company' => 'required',
-//            //'quantity' => 'required|number'
-//        ]);
-
-        $data['medicine_id'] = $this->_getMedicineId($request->input('medicine'));
-        $data['company_id'] = $this->_getCompanyId($request->input('company'));
+        $this->validate($request, [
+            'medicine' => 'required',
+            'company' => 'required',
+            'quantity' => 'required'
+        ]);
         $cartModel = new Cart();
         $cart = $cartModel->AddToCart($data);
 
         return response()->json($cart);
 
-    }
-
-    private function _getMedicineId($medicineName)
-    {
-        $medicineData = Medicine::where('brand_name', 'like', $medicineName)->first();
-
-        return !empty($medicineData) ? $medicineData->id : '';
-    }
-
-    private function _getCompanyId($companyName)
-    {
-        $companyData = MedicineCompany::where('company_name', 'like', $companyName)->first();
-
-        return !empty($companyData) ? $companyData->id : '';
     }
 }
