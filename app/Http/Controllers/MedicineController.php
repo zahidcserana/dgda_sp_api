@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medicine;
+use App\Models\MedicineCompany;
 use Illuminate\Http\Request;
 
 class MedicineController extends Controller
@@ -10,7 +11,10 @@ class MedicineController extends Controller
     public function search(Request $request)
     {
         $str = $request->input('search');
+        $companyData = MedicineCompany::where('company_name', 'like', $request->input('company'))->first();
+
         $medicines = Medicine::where('brand_name', 'like', '%' . $str . '%')
+            ->where('company_id', $companyData->id)
             ->orWhere('id', $str)
             ->inRandomOrder()
             ->limit(10)
