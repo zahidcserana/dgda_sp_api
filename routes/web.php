@@ -18,6 +18,7 @@ $router->group(['prefix' => 'api'],
                 /** Carts */
                 $router->post('carts/add-to-cart', ['uses' => 'CartController@addToCart']);
                 $router->get('carts/{token}', ['uses' => 'CartController@view']);
+                $router->post('carts/delete-item', ['uses' => 'CartController@deleteItem']);
 
                 /** Order */
                 $router->post('orders', ['uses' => 'OrderController@create']);

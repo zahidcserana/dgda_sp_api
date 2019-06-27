@@ -32,6 +32,17 @@ class CartController extends Controller
 
         $cart = Cart::where('token', $cartToken)->first();
         $cartModel = new Cart();
-        return response()->json($cartModel->getCartDetails($cart->id));
+        $result = $cartModel->getCartDetails($cart->id);
+
+        return response()->json($result);
+    }
+
+    public function deleteItem(Request $request)
+    {
+        $data = $request->all();
+        $cartItemModel = new CartItem();
+        $result = $cartItemModel->deleteItem($data);
+
+        return response()->json($result);
     }
 }

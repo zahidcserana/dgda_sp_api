@@ -35,7 +35,10 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::orderBy('id', 'desc')->get();
+        foreach ($orders as $order) {
+            $order->pharmacy_branch = $order->PharmacyBranch;
+        }
 
         return response()->json($orders);
     }

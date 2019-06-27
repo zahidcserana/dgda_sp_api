@@ -19,8 +19,10 @@ class CartItem extends Model
           'company_id' => $companyData->id,
           'quantity' => $data['quantity'],
           'cart_id' => $data['cart_id'],
-          'unit_price' => $medicineData->price_per_pcs,
-          'sub_total' => $medicineData->price_per_pcs,
+          'unit_price' => 110,
+          // 'unit_price' => $medicineData->price_per_pcs,
+          'sub_total' => 110,
+          // 'sub_total' => $medicineData->price_per_pcs,
         );
 
         $cartItem = CartItem::insertGetId($item);
@@ -33,5 +35,17 @@ class CartItem extends Model
     public function medicine()
     {
         return $this->belongsTo('App\Models\Medicine');
+    }
+
+    public function deleteItem($data)
+    {
+        $cartModel = new Cart();
+        $cart = $cartModel::where('token', $data['token'])->first();
+        $this::where('id',$data['item_id'])->delete();
+
+        $cartModel->updateCart($cart->id);
+        $cartDetails = $cartModel->getCartDetails($cart->id);
+
+        return ['success' => true, 'data' => $cartDetails];
     }
 }

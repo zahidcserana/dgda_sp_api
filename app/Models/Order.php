@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +16,7 @@ class Order extends Model
             return ['success' => false, 'error' => 'Something went wrong!'];
         }
         $input = array(
-            'pharmacy_shop_branch_id' => $cartData->pharmacy_shop_branch_id,
+            'pharmacy_branch_id' => $cartData->pharmacy_branch_id,
             'quantity' => $cartData->quantity,
             'sub_total' => $cartData->sub_total,
             'tax' => $cartData->tax,
@@ -24,9 +25,21 @@ class Order extends Model
         );
 
         $orderId = $this::insertGetId($input);
+
+        $this->_createOrderInvoice($orderId, $cartData->pharmacy_branch_id);
+
         $orderItemModel = new OrderItem();
         $orderItemModel->addItem($orderId, $cartData->id);
         return ['success' => true];
+    }
+
+    private function _createOrderInvoice($orderId, $pharmacy_branch_id)
+    {
+        $pharmacyBranchModel = new PharmacyBranch();
+        $pharmacyBranch = $pharmacyBranchModel->where('id', $pharmacy_branch_id)->first();
+        $invoice = $orderId . substr($pharmacyBranch->branch_mobile, -4) . Carbon::now()->timestamp;
+        $this->where('id', $orderId)->update(['invoice' => $invoice]);
+        return;
     }
 
     public function getOrderDetails($orderId)
@@ -36,7 +49,7 @@ class Order extends Model
         $orderItems = $order->items()->get();
         $data = array();
         $data['token'] = $order->token;
-        $data['pharmacy_shop_branch_id'] = $order->pharmacy_shop_branch_id;
+        $data['pharmacy_branch_id'] = $order->pharmacy_branch_id;
         $data['sub_total'] = $order->sub_total;
         $data['tax'] = $order->tax;
         $data['discount'] = $order->discount;
@@ -65,5 +78,10 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany('App\Models\OrderItem');
+    }
+
+    public function PharmacyBranch()
+    {
+        return $this->belongsTo('App\Models\PharmacyBranch');
     }
 }

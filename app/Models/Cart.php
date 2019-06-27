@@ -17,7 +17,9 @@ class Cart extends Model
                 return ['success' => false, 'error' => 'Invalid Cart Token!'];
             }
         } else {
-            $cartInput = array();
+            $cartInput = array(
+                'pharmacy_branch_id' => 1
+            );
             $data['cart_id'] = $this::insertGetId($cartInput);
         }
 
@@ -55,7 +57,7 @@ class Cart extends Model
         $cartItems = $cart->items()->get();
         $data = array();
         $data['token'] = $cart->token;
-        $data['pharmacy_shop_branch_id'] = $cart->pharmacy_shop_branch_id;
+        $data['pharmacy_branch_id'] = $cart->pharmacy_branch_id;
         $data['sub_total'] = $cart->sub_total;
         $data['tax'] = $cart->tax;
         $data['discount'] = $cart->discount;
