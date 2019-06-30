@@ -37,6 +37,15 @@ class CartController extends Controller
         return response()->json($result);
     }
 
+    public function quantityUpdate(Request $request)
+    {
+        $data = $request->all();
+        $cartModel = new Cart();
+        $cartUpdate = $cartModel->quantityUpdate($data);
+        
+        return response()->json($cartUpdate);
+    }
+
     public function deleteItem(Request $request)
     {
         $data = $request->all();

@@ -50,6 +50,23 @@ class Cart extends Model
         return;
     }
 
+    public function quantityUpdate($data)
+    {
+        $cart = $this::where('token', $data['token'])->first();
+        if ($cart) {
+            $cartItemModel = new CartItem();
+            if ($cartItemModel->updateQuantity($data)) {
+                $this->updateCart($cart->id);
+                $cartDetails = $this->getCartDetails($cart->id);
+                return ['success' => true, 'data' => $cartDetails];
+            } else {
+                return ['success' => false, 'error' => 'Something went wrong!'];
+            }
+        } else {
+            return ['success' => false, 'error' => 'Invalid Cart Token!'];
+        }
+    }
+
     public function getCartDetails($cartId)
     {
         $cart = $this::find($cartId);
