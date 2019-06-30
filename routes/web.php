@@ -10,6 +10,15 @@ $router->group(['prefix' => 'api'],
             function () use ($router) {
                 $router->get('users', ['uses' => 'UserController@showAllUsers']);
 
+                /** Users */
+                $router->post('users', ['uses' => 'UserController@create']);
+                $router->post('users/verify', ['uses' => 'UserController@verifyUser']);
+                $router->post('users/verification-code', ['uses' => 'UserController@getVerificationCode']);
+
+                 /** Home */
+                $router->post('districts', ['uses' => 'HomeController@districtList']);
+                $router->post('companies/all', ['uses' => 'HomeController@CompanyList']);
+
                 /** Medicine */
                 $router->get('medicines/search', ['uses' => 'MedicineController@search']);
                 $router->post('medicines/company', ['uses' => 'MedicineController@searchByCompany']);
@@ -25,6 +34,7 @@ $router->group(['prefix' => 'api'],
                 $router->post('orders', ['uses' => 'OrderController@create']);
                 $router->get('orders', ['uses' => 'OrderController@index']);
                 $router->get('orders/{token}', ['uses' => 'OrderController@view']);
+                $router->post('orders/update', ['uses' => 'OrderController@update']);
 
 
             }

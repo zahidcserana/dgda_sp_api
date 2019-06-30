@@ -42,4 +42,13 @@ class OrderController extends Controller
 
         return response()->json($orders);
     }
+
+    public function update(Request $request)
+    {
+        $updateQuery = $request->all();
+        if (Order::where('token', $request->token)->update($updateQuery)) {
+            return response()->json(true);
+        }
+        return response()->json(false);
+    }
 }
