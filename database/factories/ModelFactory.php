@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Hash;
 
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
-        'user_name'     => $faker->name,
-        'user_email'    => $faker->unique()->email,
+        'name'     => $faker->name,
+        'email'    => $faker->unique()->email,
         'password' => Hash::make('12345'),
         'pharmacy_shop_row_id' => 1,
         'userid' => 1000001,

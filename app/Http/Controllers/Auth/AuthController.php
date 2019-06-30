@@ -32,7 +32,7 @@ class AuthController extends Controller
             'email'     => 'required',
             'password'  => 'required'
         ]);
-        $user = User::where('user_email', $this->request->email)->first();
+        $user = User::where('email', $this->request->email)->first();
         if (!$user) {
             
             return response()->json([
@@ -48,7 +48,7 @@ class AuthController extends Controller
                 'message' => 'Login Successful',
                 'data'    => [
                     'token' => $this->jwt($user),
-                    'email' => $user->user_email,
+                    'email' => $user->email,
                     'user_type' => $user->user_type,
                 ]
             ], 200);
