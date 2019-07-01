@@ -47,8 +47,8 @@ class OrderController extends Controller
     {
         $updateQuery = $request->all();
         if (Order::where('token', $request->token)->update($updateQuery)) {
-            return response()->json(true);
+            return response()->json(['success' => true]);
         }
-        return response()->json(false);
+        return response()->json(['success' => false]);
     }
 }
