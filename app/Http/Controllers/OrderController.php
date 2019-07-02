@@ -47,9 +47,14 @@ class OrderController extends Controller
     {
         $updateQuery = $request->all();
         $updateQuery['updated_at'] = date('Y-m-d H:i:s');
+        $orderStatus = Order::where('token', $request->token)->first()->status;
+//        if ($orderStatus == 'ACCEPTED') {
+//            return response()->json(['success' => false, 'status' => $orderStatus]);
+//        }
+
         if (Order::where('token', $request->token)->update($updateQuery)) {
             return response()->json(['success' => true, 'status' => Order::where('token', $request->token)->first()->status]);
         }
-        return response()->json(['success' => false, 'status' => Order::where('token', $request->token)->first()->status]);
+        return response()->json(['success' => false, 'status' => $orderStatus]);
     }
 }

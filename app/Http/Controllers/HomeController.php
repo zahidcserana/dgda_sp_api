@@ -20,6 +20,4 @@ class HomeController extends Controller
 
         return response()->json($companies);
     }
-
-
 }

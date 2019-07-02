@@ -50,14 +50,14 @@ class UserController extends Controller
         );
 
 
-        if($sendType == 1){ // Send to individual ids
+        if ($sendType == 1) { // Send to individual ids
 
             $fields = array(
                 'registration_ids' => $firebaseIds,
                 'data' => $res
             );
 
-        }else{ // Send to all
+        } else { // Send to all
 
             $fields = array(
                 'to' => '/topics/global',
@@ -67,7 +67,7 @@ class UserController extends Controller
         }
 
         $headers = array(
-            'Authorization: key='.$firebaseApiKey,
+            'Authorization: key=' . $firebaseApiKey,
             'Content-Type: application/json'
         );
 
@@ -88,7 +88,7 @@ class UserController extends Controller
         $result = curl_exec($ch);
 
         if ($result === FALSE) {
-            $result =  curl_error($ch);
+            $result = curl_error($ch);
         }
 
         // Close connection
@@ -125,6 +125,14 @@ class UserController extends Controller
 
         return response()->json($user);
 
+    }
+
+    public function update($id, Request $request)
+    {
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+
+        return response()->json(['success' => true, 'data' => $user]);
     }
 
     /*

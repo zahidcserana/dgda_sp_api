@@ -14,6 +14,7 @@ $router->group(['prefix' => 'api'],
                 $router->post('users', ['uses' => 'UserController@create']);
                 $router->post('users/verify', ['uses' => 'UserController@verifyUser']);
                 $router->post('users/verification-code', ['uses' => 'UserController@getVerificationCode']);
+                $router->post('users/{id}', ['uses' => 'UserController@update']);
 
                  /** Home */
                 $router->post('districts', ['uses' => 'HomeController@districtList']);
