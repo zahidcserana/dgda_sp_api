@@ -18,12 +18,13 @@ $router->group(['prefix' => 'api'],
 
                 /** Home */
                 $router->post('cities', ['uses' => 'HomeController@districtList']);
+                $router->post('areas/{id}', ['uses' => 'HomeController@areaList']);
                 $router->post('companies/all', ['uses' => 'HomeController@CompanyList']);
 
                 /** Medicine */
                 $router->get('medicines/search', ['uses' => 'MedicineController@search']);
                 $router->post('medicines/company', ['uses' => 'MedicineController@searchByCompany']);
-                $router->get('companies', ['uses' => 'CompanyController@index']);
+                $router->get('companies', ['uses' => 'CompanyController@index']); // only name of all companies
 
                 /** Carts */
                 $router->post('carts/add-to-cart', ['uses' => 'CartController@addToCart']);

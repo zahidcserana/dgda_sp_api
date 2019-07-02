@@ -14,6 +14,13 @@ class HomeController extends Controller
         return response()->json($districts);
     }
 
+    public function areaList($cityId)
+    {
+        $areas = DB::table('areas')->where('district_id', $cityId)->get();
+
+        return response()->json($areas);
+    }
+
     public function CompanyList()
     {
         $companies = DB::table('medicine_companies')->get();
