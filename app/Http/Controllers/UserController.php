@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PharmacyMrConnection;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -135,27 +136,13 @@ class UserController extends Controller
         return response()->json(['success' => true, 'data' => $user]);
     }
 
-    /*
-public function showOneAuthor($id)
+    public function mrConnection(Request $request)
     {
-        return response()->json(Author::find($id));
+       $phamracy_mr_connection = PharmacyMrConnection::create($request->all());
+
+        return response()->json(['success' => true, 'data' => $phamracy_mr_connection]);
+
     }
 
-
-
-    public function update($id, Request $request)
-    {
-        $author = Author::findOrFail($id);
-        $author->update($request->all());
-
-        return response()->json($author, 200);
-    }
-
-    public function delete($id)
-    {
-        Author::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
-    }
-    */
 
 }

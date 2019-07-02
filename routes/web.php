@@ -16,8 +16,8 @@ $router->group(['prefix' => 'api'],
                 $router->post('users/verification-code', ['uses' => 'UserController@getVerificationCode']);
                 $router->post('users/{id}', ['uses' => 'UserController@update']);
 
-                 /** Home */
-                $router->post('districts', ['uses' => 'HomeController@districtList']);
+                /** Home */
+                $router->post('cities', ['uses' => 'HomeController@districtList']);
                 $router->post('companies/all', ['uses' => 'HomeController@CompanyList']);
 
                 /** Medicine */
@@ -37,6 +37,8 @@ $router->group(['prefix' => 'api'],
                 $router->get('orders/{token}', ['uses' => 'OrderController@view']);
                 $router->post('orders/update', ['uses' => 'OrderController@update']);
 
+                /** MR Connection */
+                $router->post('mr-connection', ['uses' => 'UserController@mrConnection']);
 
             }
         );
@@ -49,8 +51,8 @@ $router->group(['prefix' => 'api'],
         );
     }
 );
-    /** Script for database migration */
-   $router->get('medicine-scripe',  ['uses' => 'TestController@medicineScript']);
-   $router->get('medicine-type',  ['uses' => 'TestController@medicineTypeScript']);
+/** Script for database migration */
+$router->get('medicine-scripe', ['uses' => 'TestController@medicineScript']);
+$router->get('medicine-type', ['uses' => 'TestController@medicineTypeScript']);
 
 
