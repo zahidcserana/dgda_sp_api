@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
+    protected $guarded = [];
+
     public function addItem($data)
     {
         $medicine = new Medicine();

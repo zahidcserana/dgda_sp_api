@@ -26,6 +26,15 @@ class OrderController extends Controller
 
     }
 
+    public function manualOrder(Request $request)
+    {
+        $data = $request->all();
+        $orderModel = new Order();
+        $order = $orderModel->makeManualOrder($data);
+        
+        return response()->json($order);
+    }
+
     public function view($orderToken)
     {
         $order = Order::where('token', $orderToken)->first();

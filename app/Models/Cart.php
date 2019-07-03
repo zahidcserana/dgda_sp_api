@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class Cart extends Model
 {
+    protected $guarded = [];
+
     public function AddToCart($data)
     {
         if (!empty($data['token']) && $data['token'] != 'undefined') {
