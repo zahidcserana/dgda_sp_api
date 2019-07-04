@@ -10,4 +10,9 @@ class Medicine extends Model
     {
         return $this->belongsTo('App\Models\MedicineType');
     }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Models\MedicineCompany');
+    }
 }

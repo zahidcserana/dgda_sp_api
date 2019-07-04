@@ -70,17 +70,49 @@ class OrderController extends Controller
     public function manualOrderList(Request $request)
     {
         $pageNo = $request->query('page_no') ?? 1;
-        $limit = $request->query('limit') ?? 10;
+        $limit = $request->query('limit') ?? 100;
         $offset = (($pageNo - 1) * $limit);
         $where = array();
         $where = array_merge(array(['is_manual', true]), $where);
-
-        $orders = Order::where($where)
+        $query = Order::where($where);
+        $total = $query->count();
+        $orders = $query
             ->orderBy('id', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();
+        $orderData = array();
+        foreach ($orders as $order) {
+            $items = $order->items()->get();
+            foreach ($items as $item) {
+                $aData = array();
+                $aData['id'] = $item->id;
+                $aData['order_id'] = $item->order_id;
 
-        return response()->json($orders);
+                $company = $item->company;
+                $aData['company'] = ['id' => $company->id, 'name' => $company->company_name];
+
+                $aData['invoice'] = $order->invoice;
+
+                $medicine = $item->medicine;
+                $aData['medicine'] = ['id' => $medicine->id, 'brand_name' => $medicine->brand_name];
+
+                $aData['exp_date'] = $item->exp_date;
+                $aData['mfg_date'] = $item->mfg_date;
+                $aData['batch_no'] = $item->batch_no;
+                $aData['quantity'] = $item->quantity;
+                $aData['status'] = $order->status;
+
+                $orderData[] = $aData;
+            }
+
+        }
+
+        $data = array(
+            'total' => $total,
+            'data' => $orderData,
+        );
+
+        return response()->json($data);
     }
 }

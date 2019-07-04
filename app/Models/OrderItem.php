@@ -59,8 +59,8 @@ class OrderItem extends Model
                 //'unit_price' => $cartItem->unit_price,
                 // 'sub_total' => $cartItem->sub_total,
                 'total' => $items['totals'][$i],
-                'tax' => $items['vats'][$i],
-                'power' => $items['powers'][$i],
+                'mfg_date' => $items['mfgs'][$i],
+                'exp_date' => $items['exps'][$i],
                 // 'discount' => $cartItem->discount,
             );
             //var_dump($itemInput);exit;
@@ -72,5 +72,10 @@ class OrderItem extends Model
     public function medicine()
     {
         return $this->belongsTo('App\Models\Medicine');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Models\MedicineCompany');
     }
 }
