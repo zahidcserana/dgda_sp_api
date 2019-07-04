@@ -120,11 +120,11 @@ class UserController extends Controller
             'user_mobile' => 'required',
         ]);
 
-        $user = DB::table('users')
+        $userCode = DB::table('users')
             ->where('user_mobile', $request->user_mobile)
             ->value('verification_pin');
 
-        return response()->json($user);
+        return response()->json(['code' => $userCode]);
 
     }
 
@@ -138,7 +138,7 @@ class UserController extends Controller
 
     public function mrConnection(Request $request)
     {
-       $phamracy_mr_connection = PharmacyMrConnection::create($request->all());
+        $phamracy_mr_connection = PharmacyMrConnection::create($request->all());
 
         return response()->json(['success' => true, 'data' => $phamracy_mr_connection]);
 
