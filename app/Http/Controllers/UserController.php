@@ -18,9 +18,9 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            //'email' => 'required|email|unique:users',
             'user_mobile' => 'required',
-            'password' => 'required|confirmed|min:6',
+            //'password' => 'required|confirmed|min:6',
         ]);
         $data = $request->all();
         $userModel = new User();

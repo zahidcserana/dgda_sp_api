@@ -42,6 +42,9 @@ $router->group(['prefix' => 'api'],
                 /** MR Connection */
                 $router->post('mr-connection', ['uses' => 'UserController@mrConnection']);
 
+                /** Reports */
+                $router->get('reports/purchase-manual', ['uses' => 'OrderController@manualOrderList']);
+
             }
         );
 

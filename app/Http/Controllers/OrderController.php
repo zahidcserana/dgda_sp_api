@@ -31,7 +31,7 @@ class OrderController extends Controller
         $data = $request->all();
         $orderModel = new Order();
         $order = $orderModel->makeManualOrder($data);
-        
+
         return response()->json($order);
     }
 
@@ -65,5 +65,22 @@ class OrderController extends Controller
             return response()->json(['success' => true, 'status' => Order::where('token', $request->token)->first()->status]);
         }
         return response()->json(['success' => false, 'status' => $orderStatus]);
+    }
+
+    public function manualOrderList(Request $request)
+    {
+        $pageNo = $request->query('page_no') ?? 1;
+        $limit = $request->query('limit') ?? 10;
+        $offset = (($pageNo - 1) * $limit);
+        $where = array();
+        $where = array_merge(array(['is_manual', true]), $where);
+
+        $orders = Order::where($where)
+            ->orderBy('id', 'desc')
+            ->offset($offset)
+            ->limit($limit)
+            ->get();
+
+        return response()->json($orders);
     }
 }

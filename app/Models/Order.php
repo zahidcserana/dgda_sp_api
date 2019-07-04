@@ -86,6 +86,7 @@ class Order extends Model
         $pharmacy_branch_id = 1;
         $input = array(
             'pharmacy_branch_id' => $pharmacy_branch_id,
+            'is_manual' => true,
             'purchase_date' => empty($data['purchase_date']) ? date('Y-m-d') : $data['purchase_date'],
             'company_invoice' => $data['company_invoice'],
             'discount' => empty($data['discount']) ? 0 : $data['discount'],
