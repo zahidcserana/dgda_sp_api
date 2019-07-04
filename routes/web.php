@@ -11,8 +11,6 @@ $router->group(['prefix' => 'api'],
                 $router->get('users', ['uses' => 'UserController@showAllUsers']);
 
                 /** Users */
-                $router->post('users', ['uses' => 'UserController@create']);
-                $router->post('users/verify', ['uses' => 'UserController@verifyUser']);
                 $router->post('users/verification-code', ['uses' => 'UserController@getVerificationCode']);
                 $router->post('users/{id}', ['uses' => 'UserController@update']);
 
@@ -54,6 +52,10 @@ $router->group(['prefix' => 'api'],
                 'uses' => 'Auth\AuthController@userAuthenticate'
             ]
         );
+
+        $router->post('users', ['uses' => 'UserController@create']);
+        $router->post('users/verify', ['uses' => 'UserController@verifyUser']);
+
     }
 );
 /** Script for database migration */
