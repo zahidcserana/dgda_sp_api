@@ -83,11 +83,12 @@ class Order extends Model
 
     /** Manual Order */
 
-    public function makeManualOrder($data)
+    public function makeManualOrder($data, $user)
     {
-        $pharmacy_branch_id = 1;
         $input = array(
-            'pharmacy_branch_id' => $pharmacy_branch_id,
+            'pharmacy_id' => $user->pharmacy_id,
+            'pharmacy_branch_id' => $user->pharmacy_branch_id,
+            'created_by' => $user->id,
             'is_manual' => true,
             'purchase_date' => empty($data['purchase_date']) ? date('Y-m-d') : $data['purchase_date'],
             'company_invoice' => $data['company_invoice'],
@@ -96,7 +97,7 @@ class Order extends Model
 
         $orderId = $this::insertGetId($input);
 
-        $this->_createOrderInvoice($orderId, $pharmacy_branch_id);
+        $this->_createOrderInvoice($orderId, $user->pharmacy_branch_id);
 
         $orderItemModel = new OrderItem();
         if ($orderItemModel->manualOrderIem($orderId, $data)) {

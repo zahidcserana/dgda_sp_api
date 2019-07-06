@@ -28,9 +28,11 @@ class OrderController extends Controller
 
     public function manualOrder(Request $request)
     {
+        $user = $request->auth;
+
         $data = $request->all();
         $orderModel = new Order();
-        $order = $orderModel->makeManualOrder($data);
+        $order = $orderModel->makeManualOrder($data, $user);
 
         return response()->json($order);
     }
