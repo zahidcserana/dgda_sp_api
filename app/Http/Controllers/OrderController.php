@@ -103,7 +103,7 @@ class OrderController extends Controller
                 $aData['mfg_date'] = $item->mfg_date;
                 $aData['batch_no'] = $item->batch_no;
                 $aData['quantity'] = $item->quantity;
-                $aData['status'] = $order->status;
+                $aData['status'] = $item->status;
 
                 $orderData[] = $aData;
             }
