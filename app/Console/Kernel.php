@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
     {
 
         $schedule->command('monthly:reminder')
-            ->monthly();
+            ->everyMinute();
 
     }
 

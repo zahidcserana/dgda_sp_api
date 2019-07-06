@@ -34,36 +34,24 @@ class MontlyReminder extends Command
 
     /**
      * Execute the console command.
-     *
+     * Go to your terminal, ssh into your server, cd into your project and run this command: crontab -e
+     * This will open the server Crontab file, paste the code below into the file, save and then exit: * * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1
      * @return mixed
      */
     public function handle()
     {
-        $orders = Order::all();
+        $data = Order::where('is_sync', 0)->get();
 
-//        foreach ($orders as $order) {
-//            $input = array(
-//                'status' => 'DELIVERED'
-//            );
-//            $order->update($input);
-//        }
-//
-        Config::set('database.connections.mysql.database', 'dgda_test');
-//
-//        $orders = Order::all();
-//
-//        foreach ($orders as $order) {
-//            $input = array(
-//                'status' => 'DELIVERED'
-//            );
-//            $order->update($input);
-//        }
-
-//        Config::set('database.default', 'newConnection');
-//        DB::reconnect('newConnection');
-        foreach ($orders as $order) {
-            DB::table('orders')->insert($order);
-
+        $db_ext = \DB::connection('live');
+        $itemIds = array();
+        foreach ($data as $item) {
+            $itemIds[] = $item->id;
+            unset($item->id);
+            unset($item->is_sync);
+            $item = $item->toArray();
+            $db_ext->table('orders')->insert($item);
         }
+        DB::table('orders')->whereIn('id', $itemIds)->update(array('is_sync' => 1));
+
     }
 }

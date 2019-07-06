@@ -6,6 +6,11 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api'],
     function () use ($router) {
+
+        $router->post('auth/login', ['uses' => 'Auth\AuthController@userAuthenticate']);
+        $router->post('users', ['uses' => 'UserController@create']);
+        $router->post('users/verify', ['uses' => 'UserController@verifyUser']);
+
         $router->group(['middleware' => 'jwt.auth'],
             function () use ($router) {
                 $router->get('users', ['uses' => 'UserController@showAllUsers']);
@@ -46,20 +51,11 @@ $router->group(['prefix' => 'api'],
             }
         );
 
-        $router->post(
-            'auth/login',
-            [
-                'uses' => 'Auth\AuthController@userAuthenticate'
-            ]
-        );
-
-        $router->post('users', ['uses' => 'UserController@create']);
-        $router->post('users/verify', ['uses' => 'UserController@verifyUser']);
-
     }
 );
 /** Script for database migration */
 $router->get('medicine-scripe', ['uses' => 'TestController@medicineScript']);
 $router->get('medicine-type', ['uses' => 'TestController@medicineTypeScript']);
+$router->get('test', ['uses' => 'TestController@test']);
 
 
