@@ -13,6 +13,8 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
+        $user = $request->auth;
+
         $data = $request->all();
 
         $this->validate($request, [
@@ -21,7 +23,7 @@ class CartController extends Controller
             'quantity' => 'required'
         ]);
         $cartModel = new Cart();
-        $cart = $cartModel->AddToCart($data);
+        $cart = $cartModel->AddToCart($data, $user);
 
         return response()->json($cart);
 
@@ -31,10 +33,23 @@ class CartController extends Controller
     {
 
         $cart = Cart::where('token', $cartToken)->first();
+        if (empty($cart)) {
+            return response()->json(['success' => false, 'error' => 'Invalid Cart Token!']);
+        }
         $cartModel = new Cart();
         $result = $cartModel->getCartDetails($cart->id);
 
         return response()->json($result);
+    }
+
+    public function tokenCheck($cartToken)
+    {
+
+        $cart = Cart::where('token', $cartToken)->first();
+        if (empty($cart)) {
+            return response()->json(['status' => false]);
+        }
+        return response()->json(['status' => true]);
     }
 
     public function quantityUpdate(Request $request)
@@ -42,7 +57,7 @@ class CartController extends Controller
         $data = $request->all();
         $cartModel = new Cart();
         $cartUpdate = $cartModel->quantityUpdate($data);
-        
+
         return response()->json($cartUpdate);
     }
 

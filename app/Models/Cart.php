@@ -9,7 +9,7 @@ class Cart extends Model
 {
     protected $guarded = [];
 
-    public function AddToCart($data)
+    public function AddToCart($data, $user)
     {
         if (!empty($data['token']) && $data['token'] != 'undefined') {
             $cart = $this::where('token', $data['token'])->first();
@@ -20,7 +20,9 @@ class Cart extends Model
             }
         } else {
             $cartInput = array(
-                'pharmacy_branch_id' => 1
+                'pharmacy_id' => $user->pharmacy_id,
+                'pharmacy_branch_id' => $user->pharmacy_branch_id,
+                'created_by' => $user->id,
             );
             $data['cart_id'] = $this::insertGetId($cartInput);
         }

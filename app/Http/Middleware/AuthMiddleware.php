@@ -50,7 +50,7 @@ class AuthMiddleware
                 'error' => 'Provided token is invalid.'
             ], 400);
         }
-    
+//    dd($request->auth);
         return $next($request);
     }
 }

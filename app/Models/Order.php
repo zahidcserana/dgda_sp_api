@@ -18,6 +18,8 @@ class Order extends Model
             return ['success' => false, 'error' => 'Something went wrong!'];
         }
         $input = array(
+            'pharmacy_id' => $cartData->pharmacy_id,
+            'created_by' => $cartData->created_by,
             'pharmacy_branch_id' => $cartData->pharmacy_branch_id,
             'quantity' => $cartData->quantity,
             'sub_total' => $cartData->sub_total,

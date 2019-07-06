@@ -32,6 +32,7 @@ $router->group(['prefix' => 'api'],
                 /** Carts */
                 $router->post('carts/add-to-cart', ['uses' => 'CartController@addToCart']);
                 $router->get('carts/{token}', ['uses' => 'CartController@view']);
+                $router->get('carts/{token}/check', ['uses' => 'CartController@tokenCheck']);
                 $router->post('carts/delete-item', ['uses' => 'CartController@deleteItem']);
                 $router->post('carts/quantity-update', ['uses' => 'CartController@quantityUpdate']);
 
