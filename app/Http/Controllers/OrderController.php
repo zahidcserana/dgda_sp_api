@@ -99,8 +99,10 @@ class OrderController extends Controller
                 $medicine = $item->medicine;
                 $aData['medicine'] = ['id' => $medicine->id, 'brand_name' => $medicine->brand_name];
 
-                $aData['exp_date'] = $item->exp_date;
-                $aData['mfg_date'] = $item->mfg_date;
+                $aData['exp_date'] = date("F, Y", strtotime($item->exp_date));
+                $aData['mfg_date'] = date("F, Y", strtotime($item->mfg_date));
+
+                //$aData['mfg_date'] = $item->mfg_date;
                 $aData['batch_no'] = $item->batch_no;
                 $aData['quantity'] = $item->quantity;
                 $aData['status'] = $item->status;
