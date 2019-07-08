@@ -115,6 +115,8 @@ class OrderController extends Controller
         $data = array(
             'total' => $total,
             'data' => $orderData,
+            'page_no' => $pageNo,
+            'limit' => $limit,
         );
 
         return response()->json($data);
