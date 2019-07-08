@@ -27,6 +27,15 @@ class OrderController extends Controller
 
     }
 
+    public function deleteItem(Request $request)
+    {
+        $data = $request->all();
+        $cartItemModel = new OrderItem();
+        $result = $cartItemModel->deleteItem($data);
+
+        return response()->json($result);
+    }
+
     public function manualOrder(Request $request)
     {
         $user = $request->auth;

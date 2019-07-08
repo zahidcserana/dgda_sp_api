@@ -44,6 +44,7 @@ $router->group(['prefix' => 'api'],
                 $router->get('orders/{token}', ['uses' => 'OrderController@view']);
                 $router->post('orders/update', ['uses' => 'OrderController@update']);
                 $router->post('orders/update-status', ['uses' => 'OrderController@statusUpdate']);
+                $router->post('orders/delete-item', ['uses' => 'OrderController@deleteItem']);
 
                 /** MR Connection */
                 $router->post('mr-connection', ['uses' => 'UserController@mrConnection']);

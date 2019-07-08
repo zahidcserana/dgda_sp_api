@@ -33,6 +33,19 @@ class OrderItem extends Model
         return;
     }
 
+    public function deleteItem($data)
+    {
+        $cartModel = new Order();
+        $item = $this::find($data['item_id']);
+        $orderId = $item->order_id;
+        $item->delete();
+
+        $cartModel->updateOrder($orderId);
+        $cartDetails = $cartModel->getOrderDetails($orderId);
+
+        return ['success' => true, 'data' => $cartDetails];
+    }
+
     public function manualOrderIem($orderId, $data)
     {
         $medicineCompany = new MedicineCompany();
