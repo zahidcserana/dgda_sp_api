@@ -30,18 +30,5 @@ class TestController extends Controller
 
     public function test()
     {
-        $data = Order::where('is_sync', 0)->get();
-
-        $db_ext = \DB::connection('live');
-        $itemIds = array();
-        foreach ($data as $item) {
-            $itemIds[] = $item->id;
-            unset($item->id);
-            $item = $item->toArray();
-            $db_ext->table('orders')->insert($item);
-        }
-        DB::table('orders')->where('id IN', $itemIds)->update(array('is_sync' => 1));
-
-
     }
 }

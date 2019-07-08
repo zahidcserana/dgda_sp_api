@@ -23,6 +23,7 @@ $router->group(['prefix' => 'api'],
                 $router->post('cities', ['uses' => 'HomeController@districtList']);
                 $router->post('areas/{id}', ['uses' => 'HomeController@areaList']);
                 $router->post('companies/all', ['uses' => 'HomeController@CompanyList']);
+                $router->get('data-sync', ['uses' => 'HomeController@dataSync']);
 
                 /** Medicine */
                 $router->get('medicines/search', ['uses' => 'MedicineController@search']);
@@ -42,6 +43,7 @@ $router->group(['prefix' => 'api'],
                 $router->get('orders', ['uses' => 'OrderController@index']);
                 $router->get('orders/{token}', ['uses' => 'OrderController@view']);
                 $router->post('orders/update', ['uses' => 'OrderController@update']);
+                $router->post('orders/update-status', ['uses' => 'OrderController@statusUpdate']);
 
                 /** MR Connection */
                 $router->post('mr-connection', ['uses' => 'UserController@mrConnection']);
