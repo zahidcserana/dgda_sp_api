@@ -53,31 +53,29 @@ class OrderItem extends Model
 
         $items = $data['items'];
         for ($i = 0; $i < count($items['medicines']); $i++) {
-            if (empty($items['medicines'][$i])) {
-                return false;
+            if (!empty($items['medicines'][$i])) {
+                $medicine = new Medicine();
+                $medicineData = $medicine->where('brand_name', 'like', $items['medicines'][$i])->first();
+
+                $itemInput = array(
+                    'medicine_id' => $medicineData->id,
+                    'company_id' => $companyData->id,
+                    'quantity' => $items['quantities'][$i],
+                    'order_id' => $orderId,
+                    //'exp_date' => $cartItem->exp_date,
+                    // 'mfg_date' => $cartItem->mfg_date,
+                    'batch_no' => $items['batches'][$i],
+                    // 'dar_no' => $cartItem->dar_no,
+                    //'unit_price' => $cartItem->unit_price,
+                    // 'sub_total' => $cartItem->sub_total,
+                    'total' => $items['totals'][$i],
+                    'mfg_date' => $items['mfgs'][$i],
+                    'exp_date' => $items['exps'][$i],
+                    // 'discount' => $cartItem->discount,
+                );
+                //var_dump($itemInput);exit;
+                $this::create($itemInput);
             }
-
-            $medicine = new Medicine();
-            $medicineData = $medicine->where('brand_name', 'like', $items['medicines'][$i])->first();
-
-            $itemInput = array(
-                'medicine_id' => $medicineData->id,
-                'company_id' => $companyData->id,
-                'quantity' => $items['quantities'][$i],
-                'order_id' => $orderId,
-                //'exp_date' => $cartItem->exp_date,
-                // 'mfg_date' => $cartItem->mfg_date,
-                'batch_no' => $items['batches'][$i],
-                // 'dar_no' => $cartItem->dar_no,
-                //'unit_price' => $cartItem->unit_price,
-                // 'sub_total' => $cartItem->sub_total,
-                'total' => $items['totals'][$i],
-                'mfg_date' => $items['mfgs'][$i],
-                'exp_date' => $items['exps'][$i],
-                // 'discount' => $cartItem->discount,
-            );
-            //var_dump($itemInput);exit;
-            $this::create($itemInput);
         }
         return true;
     }

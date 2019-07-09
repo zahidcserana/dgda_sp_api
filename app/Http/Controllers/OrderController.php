@@ -107,8 +107,8 @@ class OrderController extends Controller
         $where = array_merge(array(['orders.is_manual', true]), $where);
 
 
-        if (!empty($query['invoice'])) {
-            $where = array_merge(array(['orders.invoice', 'LIKE', '%' . $query['invoice'] . '%']), $where);
+        if (!empty($query['company_invoice'])) {
+            $where = array_merge(array(['orders.company_invoice', 'LIKE', '%' . $query['company_invoice'] . '%']), $where);
         }
         if (!empty($query['batch_no'])) {
             $where = array_merge(array(['order_items.batch_no', 'LIKE', '%' . $query['batch_no'] . '%']), $where);
@@ -136,7 +136,7 @@ class OrderController extends Controller
             $company = MedicineCompany::findOrFail($item->company_id);
             $aData['company'] = ['id' => $company->id, 'name' => $company->company_name];
 
-            $aData['invoice'] = $item->invoice;
+            $aData['company_invoice'] = $item->company_invoice;
 
             $medicine = Medicine::findOrFail($item->medicine_id);
             $aData['medicine'] = ['id' => $medicine->id, 'brand_name' => $medicine->brand_name];
