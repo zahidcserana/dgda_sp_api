@@ -98,11 +98,25 @@ class OrderController extends Controller
 
     public function manualOrderList(Request $request)
     {
+        $query = $request->query();
+
         $pageNo = $request->query('page_no') ?? 1;
         $limit = $request->query('limit') ?? 100;
         $offset = (($pageNo - 1) * $limit);
         $where = array();
         $where = array_merge(array(['orders.is_manual', true]), $where);
+
+
+        if (!empty($query['invoice'])) {
+            $where = array_merge(array(['orders.invoice', 'LIKE', '%' . $query['invoice'] . '%']), $where);
+        }
+        if (!empty($query['batch_no'])) {
+            $where = array_merge(array(['order_items.batch_no', 'LIKE', '%' . $query['batch_no'] . '%']), $where);
+        }
+        if (!empty($query['exp_type'])) {
+            $where = $this->_getExpStatus($where, $query['exp_type']);
+        }
+
         $query = Order::where($where)
             ->join('order_items', 'orders.id', '=', 'order_items.order_id');
         $total = $query->count();
@@ -147,6 +161,31 @@ class OrderController extends Controller
         );
 
         return response()->json($data);
+    }
+
+    private function _getExpStatus($where, $expTpe)
+    {
+        $today = date('Y-m-d');
+        $exp1M = date('Y-m-d', strtotime("+1 months", strtotime(date('Y-m-d'))));
+        $exp3M = date('Y-m-d', strtotime("+3 months", strtotime(date('Y-m-d'))));
+        if ($expTpe == 2) {
+            $where = array_merge(array(
+                ['order_items.exp_date', '>', $today],
+                ['order_items.exp_date', '<', $exp1M]
+            ), $where);
+        } else if ($expTpe == 3) {
+            $where = array_merge(array(
+                ['order_items.exp_date', '>', $exp1M],
+                ['order_items.exp_date', '<', $exp3M]
+            ), $where);
+        } else if ($expTpe == 1) {
+            $where = array_merge(array(
+                ['order_items.exp_date', '>', $exp3M]
+            ), $where);
+        } else if ($expTpe == 4) {
+            $where = array_merge(array(['order_items.exp_date', '<', $today]), $where);
+        }
+        return $where;
     }
 
     public function manualOrderList_old(Request $request)
