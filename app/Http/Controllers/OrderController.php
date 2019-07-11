@@ -114,7 +114,7 @@ class OrderController extends Controller
             $where = array_merge(array(['order_items.batch_no', 'LIKE', '%' . $query['batch_no'] . '%']), $where);
         }
         if (!empty($query['exp_type'])) {
-            $where = $this->_getExpStatus($where, $query['exp_type']);
+            $where = $this->_getExpCondition($where, $query['exp_type']);
         }
 
         $query = Order::where($where)
@@ -142,6 +142,8 @@ class OrderController extends Controller
             $aData['medicine'] = ['id' => $medicine->id, 'brand_name' => $medicine->brand_name];
 
             $aData['exp_date'] = date("F, Y", strtotime($item->exp_date));
+            //$aData['exp_date'] = date("F, Y", strtotime($item->exp_date));
+            $aData['exp_status'] = $this->_getExpStatus($item->exp_date);
             $aData['mfg_date'] = date("F, Y", strtotime($item->mfg_date));
 
             //$aData['mfg_date'] = $item->mfg_date;
@@ -163,7 +165,25 @@ class OrderController extends Controller
         return response()->json($data);
     }
 
-    private function _getExpStatus($where, $expTpe)
+    private function _getExpStatus($date)
+    {
+        $expDate = date("F, Y", strtotime($date));
+
+        $today = date('Y-m-d');
+        $exp1M = date('Y-m-d', strtotime("+1 months", strtotime(date('Y-m-d'))));
+        $exp3M = date('Y-m-d', strtotime("+3 months", strtotime(date('Y-m-d'))));
+        if ($date < $today) {
+            return 'EXP';
+        } else if ($date >= $today && $date <= $exp1M) {
+            return '1M';
+        } else if ($date > $exp1M && $date <= $exp3M) {
+            return '3M';
+        } else {
+            return 'OK';
+        }
+    }
+
+    private function _getExpCondition($where, $expTpe)
     {
         $today = date('Y-m-d');
         $exp1M = date('Y-m-d', strtotime("+1 months", strtotime(date('Y-m-d'))));
