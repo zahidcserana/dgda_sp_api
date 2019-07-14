@@ -104,6 +104,8 @@ class OrderController extends Controller
         $limit = $request->query('limit') ?? 100;
         $offset = (($pageNo - 1) * $limit);
         $where = array();
+        $user = $request->auth;
+        $where = array_merge(array(['orders.pharmacy_branch_id',$user->pharmacy_branch_id]), $where);
         $where = array_merge(array(['orders.is_manual', true]), $where);
 
 
@@ -119,6 +121,7 @@ class OrderController extends Controller
 
         $query = Order::where($where)
             ->join('order_items', 'orders.id', '=', 'order_items.order_id');
+            
         $total = $query->count();
         $orders = $query
             ->orderBy('orders.id', 'desc')
