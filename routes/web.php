@@ -62,4 +62,7 @@ $router->get('medicine-scripe', ['uses' => 'TestController@medicineScript']);
 $router->get('medicine-type', ['uses' => 'TestController@medicineTypeScript']);
 $router->get('test', ['uses' => 'TestController@test']);
 
+$router->post('orders/sync/data', ['uses' => 'HomeController@awsData']);
 
+$router->post('data_sync', ['uses' => 'HomeController@dataSyncToDB']);
+$router->post('sync-data-to-server', ['uses' => 'HomeController@syncDataToServer']);
