@@ -41,6 +41,7 @@ class OrderController extends Controller
         $user = $request->auth;
 
         $data = $request->all();
+       
         $orderModel = new Order();
         $order = $orderModel->makeManualOrder($data, $user);
 
@@ -131,7 +132,6 @@ class OrderController extends Controller
         $orderData = array();
         foreach ($orders as $item) {
             //$items = $order->items()->get();
-
             $aData = array();
             $aData['id'] = $item->id;
             $aData['order_id'] = $item->order_id;
@@ -140,6 +140,7 @@ class OrderController extends Controller
             $aData['company'] = ['id' => $company->id, 'name' => $company->company_name];
 
             $aData['company_invoice'] = $item->company_invoice;
+            $aData['is_sync'] = $item->is_sync;
 
             $medicine = Medicine::findOrFail($item->medicine_id);
             $aData['medicine'] = ['id' => $medicine->id, 'brand_name' => $medicine->brand_name];

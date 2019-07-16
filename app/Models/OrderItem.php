@@ -69,8 +69,8 @@ class OrderItem extends Model
                     //'unit_price' => $cartItem->unit_price,
                     // 'sub_total' => $cartItem->sub_total,
                     'total' => $items['totals'][$i],
-                    'mfg_date' => $items['mfgs'][$i],
-                    'exp_date' => $items['exps'][$i],
+                    'mfg_date' => date("Y-m-d", strtotime($items['mfgs'][$i])),
+                    'exp_date' => date("Y-m-d", strtotime($items['exps'][$i])),
                     // 'discount' => $cartItem->discount,
                 );
                 //var_dump($itemInput);exit;
