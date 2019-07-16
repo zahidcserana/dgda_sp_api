@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function statusSync($statusData)
     {
         foreach ($statusData as $item) {
-            OrderItem::where('id', $item->server_item_id)->update(['status' => $item->status]);
+            OrderItem::where('id', $item['server_item_id'])->update(['status' => $item['status']]);
         }
     }
 
@@ -35,20 +35,19 @@ class HomeController extends Controller
         foreach ($statusData as $item) {
             $itemIds[] = $item->id;
         }
-
         /** status sync end */
 
         $data = array(
             'details_data' => $details_data,
             'status_data' => $statusData,
         );
-
+       
         // Make Post Fields Array
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "http://dgdasp.local/data_sync",
+            CURLOPT_URL => "http://54.214.203.243:91/data_sync",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -83,14 +82,14 @@ class HomeController extends Controller
                         OrderItem::find($item->local_item_id)->update(['server_item_id' => $item->server_item_id]);
                     }
                 }
-
-                DB::table('order_items')->whereIn('id', $itemIds)->update(array('is_status_sync' => 1));
+                if(!empty($itemIds)){
+                    DB::table('order_items')->whereIn('id', $itemIds)->update(array('is_status_sync' => 1));
+                }
             }
 
 
             //  print_r(json_decode($response));
         }
-        exit;
 
         return response()->json([
             'success' => true,
@@ -101,12 +100,16 @@ class HomeController extends Controller
 
     public function dataSyncToDB(Request $request)
     {
+       
         $data = json_decode(file_get_contents('php://input'), true);
-        // $all_datas = json_decode(file_get_contents('php://input'), true);
         $inserted_items = [];
         $inserted_item_ids = [];
-        $statusData = $data['status_data'];
-        $this->statusSync($statusData);
+        if(!empty($data['status_data'])){
+            $statusData = $data['status_data'];
+       
+            $this->statusSync($statusData);
+        }
+       
         $all_datas = $data['details_data'];
 
         foreach ($all_datas as $data) :
