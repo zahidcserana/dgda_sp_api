@@ -35,22 +35,26 @@ class OrderItem extends Model
 
     public function deleteItem($data)
     {
-        $cartModel = new Order();
+        $orderModel = new Order();
         $item = $this::find($data['item_id']);
         $orderId = $item->order_id;
         $item->delete();
+        if ($this::where('order_id', $orderId)->first()) {
+            $orderModel->updateOrder($orderId);
+            $orderDetails = $orderModel->getOrderDetails($orderId);
+        } else {
+            $order = new Order();
+            $order = $order::find($orderId);
+            $order->delete();
+            $orderDetails = [];
+        }
 
-        $cartModel->updateOrder($orderId);
-        $cartDetails = $cartModel->getOrderDetails($orderId);
 
-        return ['success' => true, 'data' => $cartDetails];
+        return ['success' => true, 'data' => $orderDetails];
     }
 
     public function manualOrderIem($orderId, $data)
     {
-        $medicineCompany = new MedicineCompany();
-        $companyData = $medicineCompany->where('company_name', 'like', $data['company'])->first();
-
         $items = $data['items'];
         for ($i = 0; $i < count($items['medicines']); $i++) {
             if (!empty($items['medicines'][$i])) {
@@ -59,7 +63,7 @@ class OrderItem extends Model
 
                 $itemInput = array(
                     'medicine_id' => $medicineData->id,
-                    'company_id' => $companyData->id,
+                    'company_id' => $data['company_id'],
                     'quantity' => $items['quantities'][$i],
                     'order_id' => $orderId,
                     //'exp_date' => $cartItem->exp_date,

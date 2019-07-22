@@ -45,6 +45,7 @@ $router->group(['prefix' => 'api'],
                 $router->post('orders/update', ['uses' => 'OrderController@update']);
                 $router->post('orders/update-status', ['uses' => 'OrderController@statusUpdate']);
                 $router->post('orders/delete-item', ['uses' => 'OrderController@deleteItem']);
+                $router->get('orders/check-is-last-item/{item_id}', ['uses' => 'OrderController@checkIsLastItem']); // unused
 
                 /** MR Connection */
                 $router->post('mr-connection', ['uses' => 'UserController@mrConnection']);

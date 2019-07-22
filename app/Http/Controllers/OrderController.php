@@ -24,7 +24,6 @@ class OrderController extends Controller
         $order = $orderModel->makeOrder($data);
 
         return response()->json($order);
-
     }
 
     public function deleteItem(Request $request)
@@ -36,12 +35,25 @@ class OrderController extends Controller
         return response()->json($result);
     }
 
+    public function checkIsLastItem($itemId)
+    {
+        $item = OrderItem::find($itemId);
+        
+        $status = false;
+        $order = OrderItem::where('order_id', $item->order_id)->count();
+       
+        if ($order > 1) {
+            $status = true;
+        }
+        return response()->json(['status' => $status]);
+    }
+
     public function manualOrder(Request $request)
     {
         $user = $request->auth;
 
         $data = $request->all();
-       
+
         $orderModel = new Order();
         $order = $orderModel->makeManualOrder($data, $user);
 
@@ -70,9 +82,9 @@ class OrderController extends Controller
         $updateQuery = $request->all();
         $updateQuery['updated_at'] = date('Y-m-d H:i:s');
         $orderStatus = Order::where('token', $request->token)->first()->status;
-//        if ($orderStatus == 'ACCEPTED') {
-//            return response()->json(['success' => false, 'status' => $orderStatus]);
-//        }
+        //        if ($orderStatus == 'ACCEPTED') {
+        //            return response()->json(['success' => false, 'status' => $orderStatus]);
+        //        }
 
         if (Order::where('token', $request->token)->update($updateQuery)) {
             return response()->json(['success' => true, 'status' => Order::where('token', $request->token)->first()->status]);
@@ -106,7 +118,7 @@ class OrderController extends Controller
         $offset = (($pageNo - 1) * $limit);
         $where = array();
         $user = $request->auth;
-        $where = array_merge(array(['orders.pharmacy_branch_id',$user->pharmacy_branch_id]), $where);
+        $where = array_merge(array(['orders.pharmacy_branch_id', $user->pharmacy_branch_id]), $where);
         $where = array_merge(array(['orders.is_manual', true]), $where);
 
 
@@ -122,7 +134,7 @@ class OrderController extends Controller
 
         $query = Order::where($where)
             ->join('order_items', 'orders.id', '=', 'order_items.order_id');
-            
+
         $total = $query->count();
         $orders = $query
             ->orderBy('orders.id', 'desc')
@@ -156,7 +168,6 @@ class OrderController extends Controller
             $aData['status'] = $item->status;
 
             $orderData[] = $aData;
-
         }
 
         $data = array(
@@ -252,7 +263,6 @@ class OrderController extends Controller
 
                 $orderData[] = $aData;
             }
-
         }
 
         $data = array(
