@@ -21,7 +21,8 @@ class MedicineController extends Controller
             ->get();
         $data = array();
         foreach ($medicines as $medicine) {
-            $data[] = $medicine->brand_name;
+            $medicineStr = $medicine->brand_name.' ('.$medicine->strength.','.$medicine->medicineType->name.')';
+            $data[] = $medicineStr;
         }
         return response()->json($data);
     }

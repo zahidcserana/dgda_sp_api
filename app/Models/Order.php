@@ -93,7 +93,6 @@ class Order extends Model
             ->where('company_id', $data['company_id'])
             ->first();
 
-          
         if ($order) {
             $orderId = $order->id;
         } else {
@@ -128,8 +127,8 @@ class Order extends Model
         $orderItem = $orderItem
             ->select(DB::raw('
             SUM(sub_total) as total_sub_total,
-            SUM(total) as total_amount, 
-            SUM(quantity) as total_quantity, 
+            SUM(total) as total_amount,
+            SUM(quantity) as total_quantity,
             SUM(tax) as total_tax'))
             ->where('order_id', $orderId)
             ->first();

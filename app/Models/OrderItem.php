@@ -58,10 +58,13 @@ class OrderItem extends Model
         $items = $data['items'];
         for ($i = 0; $i < count($items['medicines']); $i++) {
             if (!empty($items['medicines'][$i])) {
+                $medicineStr = explode(' (', $items['medicines'][$i]);
                 $medicine = new Medicine();
-                $medicineData = $medicine->where('brand_name', 'like', $items['medicines'][$i])->first();
 
-                $itemInput = array(
+                $medicineData = $medicine->where('brand_name', 'like', trim($medicineStr[0]))->first();
+
+                if (!empty($medicineData)) {
+                    $itemInput = array(
                     'medicine_id' => $medicineData->id,
                     'company_id' => $data['company_id'],
                     'quantity' => $items['quantities'][$i],
@@ -79,6 +82,7 @@ class OrderItem extends Model
                 );
                 //var_dump($itemInput);exit;
                 $this::create($itemInput);
+                }
             }
         }
         return true;
