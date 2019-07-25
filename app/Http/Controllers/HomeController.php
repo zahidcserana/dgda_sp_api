@@ -41,7 +41,7 @@ class HomeController extends Controller
             'details_data' => $details_data,
             'status_data' => $statusData,
         );
-       
+
         // Make Post Fields Array
 
         $curl = curl_init();
@@ -73,8 +73,8 @@ class HomeController extends Controller
         } else {
             $response = json_decode($response);
             if (!empty($response)) {
-                
-                
+
+
                 $data = $response->data;
                 foreach ($data as $order) {
                     Order::find($order->local_order_id)->update(['server_order_id' => $order->server_order_id, 'is_sync' => 1]);
@@ -100,16 +100,16 @@ class HomeController extends Controller
 
     public function dataSyncToDB(Request $request)
     {
-       
+
         $data = json_decode(file_get_contents('php://input'), true);
         $inserted_items = [];
         $inserted_item_ids = [];
         if(!empty($data['status_data'])){
             $statusData = $data['status_data'];
-       
+
             $this->statusSync($statusData);
         }
-       
+
         $all_datas = $data['details_data'];
 
         foreach ($all_datas as $data) :
@@ -258,5 +258,12 @@ class HomeController extends Controller
         DB::table('order_items')->whereIn('id', $itemIds)->update(array('is_status_sync' => 1));
 
         return true;
+    }
+
+    public function companyScript(){
+        $items = OrderItem::all();
+        foreach($items as $item){
+           $order = Order::find($item->order_id)->update(['company_id'=>$item->company_id]);
+        }
     }
 }
