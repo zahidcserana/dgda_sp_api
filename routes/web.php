@@ -67,3 +67,5 @@ $router->post('orders/sync/data', ['uses' => 'HomeController@awsData']);
 
 $router->post('data_sync', ['uses' => 'HomeController@dataSyncToDB']);
 $router->post('sync-data-to-server', ['uses' => 'HomeController@syncDataToServer']);
+
+$router->get('companyScript', ['uses' => 'HomeController@companyScript']);
