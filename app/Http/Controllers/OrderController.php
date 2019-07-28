@@ -38,10 +38,10 @@ class OrderController extends Controller
     public function checkIsLastItem($itemId)
     {
         $item = OrderItem::find($itemId);
-        
+
         $status = false;
         $order = OrderItem::where('order_id', $item->order_id)->count();
-       
+
         if ($order > 1) {
             $status = true;
         }
