@@ -65,23 +65,23 @@ class OrderItem extends Model
 
                 if (!empty($medicineData)) {
                     $itemInput = array(
-                    'medicine_id' => $medicineData->id,
-                    'company_id' => $data['company_id'],
-                    'quantity' => $items['quantities'][$i],
-                    'order_id' => $orderId,
-                    //'exp_date' => $cartItem->exp_date,
-                    // 'mfg_date' => $cartItem->mfg_date,
-                    'batch_no' => $items['batches'][$i],
-                    // 'dar_no' => $cartItem->dar_no,
-                    //'unit_price' => $cartItem->unit_price,
-                    // 'sub_total' => $cartItem->sub_total,
-                    'total' => $items['totals'][$i],
-                    'mfg_date' => date("Y-m-d", strtotime($items['mfgs'][$i])),
-                    'exp_date' => date("Y-m-d", strtotime($items['exps'][$i])),
-                    // 'discount' => $cartItem->discount,
-                );
-                //var_dump($itemInput);exit;
-                $this::create($itemInput);
+                        'medicine_id' => $medicineData->id,
+                        'company_id' => $data['company_id'],
+                        'quantity' => $items['quantities'][$i],
+                        'order_id' => $orderId,
+                        //'exp_date' => $cartItem->exp_date,
+                        // 'mfg_date' => $cartItem->mfg_date,
+                        'batch_no' => $items['batches'][$i],
+                        // 'dar_no' => $cartItem->dar_no,
+                        //'unit_price' => $cartItem->unit_price,
+                        // 'sub_total' => $cartItem->sub_total,
+                        'total' => empty($items['totals'][$i]) ? 0 : $items['totals'][$i],
+                        'mfg_date' => date("Y-m-d", strtotime($items['mfgs'][$i])),
+                        'exp_date' => date("Y-m-d", strtotime($items['exps'][$i])),
+                        // 'discount' => $cartItem->discount,
+                    );
+                    //var_dump($itemInput);exit;
+                    $this::create($itemInput);
                 }
             }
         }
