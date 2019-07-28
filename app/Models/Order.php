@@ -57,7 +57,13 @@ class Order extends Model
         $data['sub_total'] = $order->sub_total;
         $data['tax'] = $order->tax;
         $data['discount'] = $order->discount;
+        $data['company_invoice'] = $order->company_invoice;
+        $data['created_at'] = $order->created_at;
         $data['remarks'] = $order->remarks;
+
+        $pharmacy = $order->PharmacyBranch;
+        $data['pharmacy'] = $pharmacy->branch_name;
+
         $items = array();
         foreach ($orderItems as $item) {
             $aData = array();
@@ -73,7 +79,7 @@ class Order extends Model
             $aData['discount'] = $item->discount;
 
             $medicine = $item->medicine;
-            $aData['medicine'] = ['id' => $medicine->id, 'brand_name' => $medicine->brand_name];
+            $aData['medicine'] =  $medicine->brand_name;
             $items[] = $aData;
         }
         $data['order_items'] = $items;
