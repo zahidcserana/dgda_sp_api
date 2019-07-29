@@ -162,7 +162,7 @@ class Order extends Model
         if ($orderItemModel->manualPurchaseItem($orderId, $data)) {
             $this->updateOrder($orderId);
 
-            return ['success' => true, 'data' => $this->getOrderDetails($orderId)];
+            return ['success' => true, 'message' => 'Data successfully submitted.'];
         }
         return ['success' => false, 'error' => 'Something went wrong!'];
     }
