@@ -74,9 +74,8 @@ class OrderController extends Controller
         foreach ($orders as $order) {
             $aData = array();
             $aData['company_invoice'] = $order->company_invoice;
-            $aData['created_at'] = $order->created_at;
+            $aData['created_at'] = date("Y-m-d H:i:s", strtotime($order->created_at));
             $pharmacy_branch = $order->PharmacyBranch;
-          // dd($pharmacy_branch);
             $aData['pharmacy_branch'] = ['id'=>$pharmacy_branch['id'],'name'=>$pharmacy_branch['branch_name']];
             $data[] = $aData;
         }
