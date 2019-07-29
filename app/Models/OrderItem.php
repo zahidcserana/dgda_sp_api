@@ -112,8 +112,8 @@ class OrderItem extends Model
                         // 'dar_no' => $cartItem->dar_no,
                         //'unit_price' => $cartItem->unit_price,
                         // 'sub_total' => $cartItem->sub_total,
-                       // 'total' => empty($items['total']) ? 0 : $item['total'],
-                        //'mfg_date' => date("Y-m-d", strtotime($items['mfg_date'])),
+                        'total' => empty($item['total']) ? 0 : $item['total'],
+                        'mfg_date' => empty($item['mfg_date'])?'': date("Y-m-d", strtotime($item['mfg_date'])),
                         'exp_date' => date("Y-m-d", strtotime($item['exp_date'])),
                         // 'discount' => $cartItem->discount,
                     );
