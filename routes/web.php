@@ -40,6 +40,7 @@ $router->group(['prefix' => 'api'],
                 /** Order */
                 $router->post('orders', ['uses' => 'OrderController@create']);
                 $router->post('orders/manual', ['uses' => 'OrderController@manualOrder']);
+                $router->post('orders/purchase/manual', ['uses' => 'OrderController@manualPurchase']);
                 $router->get('orders', ['uses' => 'OrderController@index']);
                 $router->get('orders/{token}', ['uses' => 'OrderController@view']);
                 $router->post('orders/update', ['uses' => 'OrderController@update']);

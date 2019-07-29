@@ -60,6 +60,18 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
+    public function manualPurchase(Request $request)
+    {
+        $user = $request->auth;
+
+        $data = $request->all();
+
+        $orderModel = new Order();
+        $order = $orderModel->makeManualPurchase($data, $user);
+
+        return response()->json($order);
+    }
+
     public function view($orderToken)
     {
         $order = Order::where('token', $orderToken)->first();
