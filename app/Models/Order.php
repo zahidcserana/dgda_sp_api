@@ -127,6 +127,47 @@ class Order extends Model
         return ['success' => false, 'error' => 'Something went wrong!'];
     }
 
+    /** Manual Order */
+
+    public function makeManualPurchase($data, $user)
+    {
+        $medicineCompany = new MedicineCompany();
+        $companyData = $medicineCompany->where('company_name', 'like', $data['company'])->first();
+        $data['company_id'] = $companyData->id;
+        $order = $this::where('company_invoice', $data['company_invoice'])
+            ->where('pharmacy_branch_id', $user->pharmacy_branch_id)
+            ->where('company_id', $data['company_id'])
+            ->first();
+
+        if ($order) {
+            $orderId = $order->id;
+        } else {
+            $input = array(
+                'pharmacy_id' => $user->pharmacy_id,
+                'company_id' => $data['company_id'],
+                'pharmacy_branch_id' => $user->pharmacy_branch_id,
+                'created_by' => $user->id,
+                'is_manual' => true,
+                'purchase_date' => empty($data['purchase_date']) ? date('Y-m-d') : $data['purchase_date'],
+                'company_invoice' => $data['company_invoice'],
+                'discount' => empty($data['discount']) ? 0 : $data['discount'],
+            );
+
+            $orderId = $this::insertGetId($input);
+        }
+
+        $this->_createOrderInvoice($orderId, $user->pharmacy_branch_id);
+
+        $orderItemModel = new OrderItem();
+        if ($orderItemModel->manualPurchaseItem($orderId, $data)) {
+            $this->updateOrder($orderId);
+
+            return ['success' => true, 'data' => $this->getOrderDetails($orderId)];
+        }
+        return ['success' => false, 'error' => 'Something went wrong!'];
+    }
+
+
     public function updateOrder($orderId)
     {
         $orderItem = new OrderItem();

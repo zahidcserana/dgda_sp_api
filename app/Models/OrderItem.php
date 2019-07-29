@@ -88,6 +88,44 @@ class OrderItem extends Model
         return true;
     }
 
+    public function manualPurchaseItem($orderId, $data)
+    {
+        $items = $data['items'];
+
+        foreach ($items as $item) {
+
+            if (!empty($item['medicine'])) {
+                $medicineStr = explode(' (', $item['medicine']);
+                $medicine = new Medicine();
+
+                $medicineData = $medicine->where('brand_name', 'like', trim($medicineStr[0]))->first();
+               
+                if (!empty($medicineData)) {
+                    $itemInput = array(
+                        'medicine_id' => $medicineData->id,
+                        'company_id' => $data['company_id'],
+                        'quantity' => $item['quantity'],
+                        'order_id' => $orderId,
+                        //'exp_date' => $cartItem->exp_date,
+                        // 'mfg_date' => $cartItem->mfg_date,
+                        'batch_no' => $item['batch_no'],
+                        // 'dar_no' => $cartItem->dar_no,
+                        //'unit_price' => $cartItem->unit_price,
+                        // 'sub_total' => $cartItem->sub_total,
+                       // 'total' => empty($items['total']) ? 0 : $item['total'],
+                        //'mfg_date' => date("Y-m-d", strtotime($items['mfg_date'])),
+                        'exp_date' => date("Y-m-d", strtotime($item['exp_date'])),
+                        // 'discount' => $cartItem->discount,
+                    );
+                    // dd($medicineData);
+                    $this::create($itemInput);
+                }
+            }
+        }
+        return true;
+    }
+
+
     public function medicine()
     {
         return $this->belongsTo('App\Models\Medicine');
