@@ -117,7 +117,7 @@ class OrderItem extends Model
                         'exp_date' => date("Y-m-d", strtotime($item['exp_date'])),
                         // 'discount' => $cartItem->discount,
                     );
-                    dd($itemInput);
+                   // dd($itemInput);
                     $this::create($itemInput);
                 }
             }
