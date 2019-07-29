@@ -70,11 +70,18 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::orderBy('id', 'desc')->get();
+        $data = array();
         foreach ($orders as $order) {
-            $order->pharmacy_branch = $order->PharmacyBranch;
+            $aData = array();
+            $aData['company_invoice'] = $order->company_invoice;
+            $aData['created_at'] = $order->created_at;
+            $pharmacy_branch = $order->PharmacyBranch;
+          // dd($pharmacy_branch);
+            $aData['pharmacy_branch'] = ['id'=>$pharmacy_branch['id'],'name'=>$pharmacy_branch['branch_name']];
+            $data[] = $aData;
         }
 
-        return response()->json($orders);
+        return response()->json($data);
     }
 
     public function update(Request $request)

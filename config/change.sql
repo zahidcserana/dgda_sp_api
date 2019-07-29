@@ -14,3 +14,14 @@ CHANGE COLUMN `total_advance_amount` `total_advance_amount` FLOAT(15,2) NULL DEF
 ALTER TABLE `dgdasp`.`order_items`
 CHANGE COLUMN `total` `total` FLOAT(15,2) NULL DEFAULT '0.00' ,
 CHANGE COLUMN `tax` `tax` FLOAT(15,2) NULL DEFAULT '0.00' ;
+
+
+SET SQL_SAFE_UPDATES = 0;
+update dgdasp.orders set orders.tax=0 where orders.tax is null;
+update dgdasp.orders set orders.quantity=0 where orders.quantity is null;
+update dgdasp.orders set orders.discount=0 where orders.discount is null;
+update dgdasp.orders set orders.total_advance_amount=0 where orders.total_advance_amount is null;
+update dgdasp.orders set orders.total_amount=0 where orders.total_amount is null;
+update dgdasp.orders set orders.total_due_amount=0 where orders.total_due_amount is null;
+update dgdasp.orders set orders.total_payble_amount=0 where orders.total_payble_amount is null;
+SET SQL_SAFE_UPDATES = 1;
