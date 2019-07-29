@@ -113,11 +113,11 @@ class OrderItem extends Model
                         //'unit_price' => $cartItem->unit_price,
                         // 'sub_total' => $cartItem->sub_total,
                         'total' => empty($item['total']) ? 0 : $item['total'],
-                        'mfg_date' => empty($item['mfg_date'])?'': date("Y-m-d", strtotime($item['mfg_date'])),
+                        'mfg_date' => empty($item['mfg_date'])?null: date("Y-m-d", strtotime($item['mfg_date'])),
                         'exp_date' => date("Y-m-d", strtotime($item['exp_date'])),
                         // 'discount' => $cartItem->discount,
                     );
-                    // dd($medicineData);
+                    dd($medicineData);
                     $this::create($itemInput);
                 }
             }
