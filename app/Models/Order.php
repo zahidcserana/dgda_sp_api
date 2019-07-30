@@ -155,7 +155,7 @@ class Order extends Model
 
             $orderId = $this::insertGetId($input);
         }
-        return ['success' => false, 'message' => '"'.$orderId.'"'];
+        return ['success' => false, 'message' => strval($orderId)];
         $this->_createOrderInvoice($orderId, $user->pharmacy_branch_id);
 
         $orderItemModel = new OrderItem();
