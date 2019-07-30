@@ -131,9 +131,10 @@ class Order extends Model
 
     public function makeManualPurchase($data, $user)
     {
-        return ['success' => true, 'data' =>$data];
+
         $medicineCompany = new MedicineCompany();
         $companyData = $medicineCompany->where('company_name', 'like', $data['company'])->first();
+        return ['success' => true, 'data' =>$companyData];
         $data['company_id'] = $companyData->id;
 
         $order = $this::where('company_invoice', $data['company_invoice'])
