@@ -131,12 +131,9 @@ class Order extends Model
 
     public function makeManualPurchase($data, $user)
     {
-
         $medicineCompany = new MedicineCompany();
         $companyData = $medicineCompany->where('company_name', 'like', $data['company'])->first();
-        return ['success' => true, 'data' =>$companyData];
         $data['company_id'] = $companyData->id;
-
         $order = $this::where('company_invoice', $data['company_invoice'])
             ->where('pharmacy_branch_id', $user->pharmacy_branch_id)
             ->where('company_id', $data['company_id'])
@@ -155,10 +152,10 @@ class Order extends Model
                 'company_invoice' => $data['company_invoice'],
                 'discount' => empty($data['discount']) ? 0 : $data['discount'],
             );
-            return ['success' => true, 'message' => $input];
+
             $orderId = $this::insertGetId($input);
         }
-        return ['success' => true, 'message' => strval($orderId)];
+
         $this->_createOrderInvoice($orderId, $user->pharmacy_branch_id);
 
         $orderItemModel = new OrderItem();
