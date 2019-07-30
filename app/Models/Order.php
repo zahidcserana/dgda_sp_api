@@ -138,7 +138,7 @@ class Order extends Model
             ->where('pharmacy_branch_id', $user->pharmacy_branch_id)
             ->where('company_id', $data['company_id'])
             ->first();
-            return ['success' => false, 'message' => $order];
+
         if ($order) {
             $orderId = $order->id;
         } else {
@@ -155,7 +155,7 @@ class Order extends Model
 
             $orderId = $this::insertGetId($input);
         }
-
+        return ['success' => false, 'message' => $orderId];
         $this->_createOrderInvoice($orderId, $user->pharmacy_branch_id);
 
         $orderItemModel = new OrderItem();

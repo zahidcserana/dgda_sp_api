@@ -65,7 +65,7 @@ class OrderController extends Controller
         $user = $request->auth;
 
         $data = $request->all();
-        return response()->json($data);
+
         $orderModel = new Order();
         $order = $orderModel->makeManualPurchase($data, $user);
 
