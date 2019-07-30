@@ -134,11 +134,12 @@ class Order extends Model
         $medicineCompany = new MedicineCompany();
         $companyData = $medicineCompany->where('company_name', 'like', $data['company'])->first();
         $data['company_id'] = $companyData->id;
+        return ['success' => true, 'user' =>$user];
         $order = $this::where('company_invoice', $data['company_invoice'])
             ->where('pharmacy_branch_id', $user->pharmacy_branch_id)
             ->where('company_id', $data['company_id'])
             ->first();
-            return ['success' => true, 'message' =>'$order'];
+
         if ($order) {
             $orderId = $order->id;
         } else {
