@@ -152,7 +152,7 @@ class Order extends Model
                 'company_invoice' => $data['company_invoice'],
                 'discount' => empty($data['discount']) ? 0 : $data['discount'],
             );
-
+            return ['success' => true, 'message' => $input];
             $orderId = $this::insertGetId($input);
         }
         return ['success' => true, 'message' => strval($orderId)];
