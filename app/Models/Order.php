@@ -138,7 +138,7 @@ class Order extends Model
             ->where('pharmacy_branch_id', $user->pharmacy_branch_id)
             ->where('company_id', $data['company_id'])
             ->first();
-
+            return ['success' => false, 'error' => 'Something went wrong!'];
         if ($order) {
             $orderId = $order->id;
         } else {
